@@ -64,7 +64,7 @@
       const now = new Date();
       const timeStr = now.toLocaleTimeString();
 
-      fetch("https://YOUR-N8N-WEBHOOK-URL", {
+      fetch("https://n8n.kforris.synology.me/webhook-test/9d326fb2-6f00-4c0f-ba05-40d27a98c060", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ trigger: "refresh", count: parseInt(count) })
