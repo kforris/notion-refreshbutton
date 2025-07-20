@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>视频刷新工具</title>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2em;
+    }
+    label {
+      font-size: 16px;
+      margin-right: 8px;
+    }
+    select, button {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      margin: 0.5em;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎬 视频解说刷新工具</h2>
+
+  <label for="count">选择要生成的链接数量：</label>
+  <select id="count">
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+
+  <br>
+
+  <button onclick="triggerWebhook()">开始执行</button>
+
+  <script>
+    function triggerWebhook() {
+      const count = document.getElementById("count").value;
+      fetch("https://n8n.kforris.synology.me/webhook/9d326fb2-6f00-4c0f-ba05-40d27a98c060", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ trigger: "refresh", count: parseInt(count) })
+      })
+      .then(response => {
+        if (!response.ok) throw new Error("触发失败");
+        alert(`已请求生成 ${count} 条视频任务 🎉`);
+      })
+      .catch(error => {
+        alert("调用失败，请稍后再试 🥲");
+        console.error(error);
+      });
+    }
+  </script>
+</body>
+</html>
