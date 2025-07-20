@@ -1,51 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>视频刷新工具</title>
-  <meta charset="utf-8">
+  <title>解说任务刷新器</title>
+  <meta charset="utf-8" />
   <style>
     body {
       font-family: sans-serif;
-      text-align: center;
-      padding: 2em;
+      background-color: #1e1e1e;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
-    label {
-      font-size: 16px;
-      margin-right: 8px;
-    }
+
     select, button {
-      padding: 10px;
-      font-size: 16px;
+      padding: 12px 16px;
+      font-size: 18px;
       border-radius: 8px;
-      margin: 0.5em;
-      border: 1px solid #ccc;
+      margin: 10px;
+      border: none;
+      outline: none;
     }
+
+    select {
+      background-color: #fff;
+      color: #000;
+    }
+
     button {
       background-color: #4caf50;
       color: white;
       cursor: pointer;
     }
+
     button.executing {
       background-color: orange;
     }
+
     #timestamp {
       margin-top: 1em;
       font-size: 14px;
-      color: #555;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
-  <h2>🎬 视频解说刷新工具</h2>
 
-  <label for="count">选择要生成的链接数量：</label>
   <select id="count">
-    <option value="3">3</option>
-    <option value="4">4</option>
-    <option value="5">5</option>
+    <!-- 数字 1～10 -->
+    ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
   </select>
-
-  <br>
 
   <button id="triggerBtn" onclick="triggerWebhook()">开始执行</button>
 
@@ -57,21 +63,19 @@
       const btn = document.getElementById("triggerBtn");
       const timestampDiv = document.getElementById("timestamp");
 
-      // 改变按钮颜色
       btn.classList.add("executing");
 
-      // 获取当前时间
       const now = new Date();
       const timeStr = now.toLocaleTimeString();
 
-      fetch("https://n8n.kforris.synology.me/webhook-test/9d326fb2-6f00-4c0f-ba05-40d27a98c060", {
+      fetch("https://n8n.kforris.synology.me/webhook/9d326fb2-6f00-4c0f-ba05-40d27a98c060", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ trigger: "refresh", count: parseInt(count) })
       })
       .then(response => {
         if (!response.ok) throw new Error("触发失败");
-        timestampDiv.innerText = `✅ 任务提交于 ${timeStr}`;
+        timestampDiv.innerText = `✅ 提交成功：${timeStr}`;
       })
       .catch(error => {
         timestampDiv.innerText = `⚠️ 提交失败（${timeStr}）`;
@@ -84,5 +88,6 @@
       });
     }
   </script>
+
 </body>
 </html>
